@@ -20,8 +20,8 @@ open class FPNTextField: UITextField {
 	private var flagWidthConstraint: NSLayoutConstraint?
 	private var flagHeightConstraint: NSLayoutConstraint?
 
-	/// The size of the leftView
-	private var leftViewSize: CGSize {
+	/// The size of the rightView
+	private var rightViewSize: CGSize {
 		let width = flagButtonSize.width + getWidth(text: phoneCodeTextField.text!)
 		let height = bounds.height
 
@@ -98,11 +98,11 @@ open class FPNTextField: UITextField {
 	}
 
 	private func setup() {
-		leftViewMode = .always
+		rightViewMode = .always
 
 		setupFlagButton()
 		setupPhoneCodeTextField()
-		setupLeftView()
+		setupRightView()
 
 		keyboardType = .numberPad
 		autocorrectionType = .no
@@ -130,17 +130,17 @@ open class FPNTextField: UITextField {
 		phoneCodeTextField.translatesAutoresizingMaskIntoConstraints = false
 	}
 
-	private func setupLeftView() {
-		leftView = UIView()
-		leftViewMode = .always
+	private func setupRightView() {
+		rightView = UIView()
+		rightViewMode = .always
 		if #available(iOS 9.0, *) {
 			phoneCodeTextField.semanticContentAttribute = .forceLeftToRight
 		} else {
 			// Fallback on earlier versions
 		}
 
-		leftView?.addSubview(flagButton)
-		leftView?.addSubview(phoneCodeTextField)
+		rightView?.addSubview(flagButton)
+		rightView?.addSubview(phoneCodeTextField)
 
 		flagWidthConstraint = NSLayoutConstraint(item: flagButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: flagButtonSize.width)
 		flagHeightConstraint = NSLayoutConstraint(item: flagButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 0, constant: flagButtonSize.height)
@@ -148,13 +148,13 @@ open class FPNTextField: UITextField {
 		flagWidthConstraint?.isActive = true
 		flagHeightConstraint?.isActive = true
 
-		NSLayoutConstraint(item: flagButton, attribute: .centerY, relatedBy: .equal, toItem: leftView, attribute: .centerY, multiplier: 1, constant: 0).isActive = true
+		NSLayoutConstraint(item: flagButton, attribute: .centerY, relatedBy: .equal, toItem: rightView, attribute: .centerY, multiplier: 1, constant: 0).isActive = true
 
-		NSLayoutConstraint(item: flagButton, attribute: .leading, relatedBy: .equal, toItem: leftView, attribute: .leading, multiplier: 1, constant: 0).isActive = true
+		NSLayoutConstraint(item: flagButton, attribute: .leading, relatedBy: .equal, toItem: rightView, attribute: .leading, multiplier: 1, constant: 0).isActive = true
 		NSLayoutConstraint(item: phoneCodeTextField, attribute: .leading, relatedBy: .equal, toItem: flagButton, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
-		NSLayoutConstraint(item: phoneCodeTextField, attribute: .trailing, relatedBy: .equal, toItem: leftView, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
-		NSLayoutConstraint(item: phoneCodeTextField, attribute: .top, relatedBy: .equal, toItem: leftView, attribute: .top, multiplier: 1, constant: 0).isActive = true
-		NSLayoutConstraint(item: phoneCodeTextField, attribute: .bottom, relatedBy: .equal, toItem: leftView, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
+		NSLayoutConstraint(item: phoneCodeTextField, attribute: .trailing, relatedBy: .equal, toItem: rightView, attribute: .trailing, multiplier: 1, constant: 0).isActive = true
+		NSLayoutConstraint(item: phoneCodeTextField, attribute: .top, relatedBy: .equal, toItem: rightView, attribute: .top, multiplier: 1, constant: 0).isActive = true
+		NSLayoutConstraint(item: phoneCodeTextField, attribute: .bottom, relatedBy: .equal, toItem: rightView, attribute: .bottom, multiplier: 1, constant: 0).isActive = true
 	}
 
 	open override func updateConstraints() {
@@ -165,7 +165,7 @@ open class FPNTextField: UITextField {
 	}
 
 	open override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
-		let size = leftViewSize
+		let size = rightViewSize
 		let width: CGFloat = min(bounds.size.width, size.width)
 		let height: CGFloat = min(bounds.size.height, size.height)
 		let newRect: CGRect = CGRect(x: bounds.minX, y: bounds.minY, width: width, height: height)
